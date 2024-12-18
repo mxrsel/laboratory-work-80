@@ -12,7 +12,7 @@ const imageStorage = multer.diskStorage({
     },
     filename: (_req, file, cb) => {
         const ex = path.extname(file.originalname);
-        cb(null, '/' + randomUUID() + ex)
+        cb(null, + randomUUID() + ex)
     }
 });
 
