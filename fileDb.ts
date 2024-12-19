@@ -24,11 +24,11 @@ export const fileDb = {
     async getInventory() {
         return  data
     },
-    async addInventoryItem(resource: ItemWithoutId | LocationWithoutId | CategoryWithoutId, dataType: 'item' | 'location' | 'category') {
+    async addInventoryResource(resource: ItemWithoutId | LocationWithoutId | CategoryWithoutId, dataType: 'items' | 'location' | 'category') {
         const id = crypto.randomUUID().toString();
         const resourceWithId = { id, ...resource };
 
-        if (dataType === 'item') {
+        if (dataType === 'items') {
             data.items = data.items || [];
             data.items.push(resourceWithId as Item);
         } else if (dataType === 'location') {
@@ -45,6 +45,14 @@ export const fileDb = {
         await this.save();
         return resourceWithId;
     },
+
+    async getResourcesById(resource: 'items' | 'location' | 'category', id: string) {
+        const resources = data[resource];
+        const findResourceById = resources.find((resource) => resource.id === id);
+        if(!findResourceById) console.error('Resource not found!');
+        return findResourceById
+    },
+
     async save() {
         return fs.writeFile(file, JSON.stringify(data));
     }

@@ -16,6 +16,15 @@ inventoryRouter.get('/items', async (_req, res) => {
     }
 })
 
+inventoryRouter.get('/items/:id', async (req, res) => {
+   try {
+       const resource = await fileDb.getResourcesById('items', req.params.id);
+       res.send(resource)
+   } catch(e) {
+       console.error(e)
+   }
+})
+
 inventoryRouter.post('/items', imagesUpload.single('image'), async(req, res) => {
    try {
        if (!req.body.itemName || !req.body.category_id || !req.body.location_id) {
@@ -32,7 +41,7 @@ inventoryRouter.post('/items', imagesUpload.single('image'), async(req, res) => 
            date: new Date().toISOString()
        };
 
-       const savedItem = await fileDb.addInventoryItem(newItem, "item");
+       const savedItem = await fileDb.addInventoryResource(newItem, "items");
        res.send(savedItem)
    } catch (e) {
        console.error(e)
@@ -61,7 +70,7 @@ inventoryRouter.post('/locations', async(req, res) => {
            locationDescription: req.body.locationDescription
        }
 
-       const savedLocation = await fileDb.addInventoryItem(newLocation, 'location');
+       const savedLocation = await fileDb.addInventoryResource(newLocation, 'location');
        res.send(savedLocation)
    } catch (e) {
        console.error(e)
@@ -90,7 +99,7 @@ inventoryRouter.post('/category', async(req, res) => {
             categoryDescription: req.body.categoryDescription
         }
 
-        const savedCategory = await fileDb.addInventoryItem(newCategory, 'category');
+        const savedCategory = await fileDb.addInventoryResource(newCategory, 'category');
         res.send(savedCategory)
     } catch (e) {
         console.error(e)
