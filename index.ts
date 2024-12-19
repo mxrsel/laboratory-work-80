@@ -1,6 +1,8 @@
 import express from 'express';
 import {fileDb} from "./fileDb";
-import {inventoryRouter} from "./routers/inventory";
+import {itemsRouter} from "./routers/items";
+import {locationsRouter} from "./routers/locations";
+import {categoriesRouter} from "./routers/categories";
 
 const fs = require('fs');
 
@@ -8,7 +10,9 @@ const app = express();
 const port = 8000;
 
 app.use(express.json());
-app.use('/inventory', inventoryRouter)
+app.use('/inventory', itemsRouter);
+app.use('/inventory', locationsRouter);
+app.use('/inventory', categoriesRouter);
 app.use(express.static('public'));
 
 const run = async () => {

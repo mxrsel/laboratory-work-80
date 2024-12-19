@@ -53,6 +53,14 @@ export const fileDb = {
         return findResourceById
     },
 
+    async deleteResourceItem(resource: 'items' | 'location' | 'category', id: string) {
+        const resources = data[resource];
+        const deleteResource = resources.findIndex((resource) => resource.id === id);
+        if(deleteResource === -1) console.log("Current resource doesn't exist")
+        data[resource].splice(deleteResource, 0);
+        await this.save()
+    },
+
     async save() {
         return fs.writeFile(file, JSON.stringify(data));
     }
